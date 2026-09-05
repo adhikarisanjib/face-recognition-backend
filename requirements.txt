@@ -1,0 +1,10 @@
+fastapi[standard]
+sqlalchemy
+asyncpg
+pyjwt
+pwdlib[argon2]
+pgvector
+deepface
+tf-keras
+opencv-python
+
