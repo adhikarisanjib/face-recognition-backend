@@ -30,6 +30,9 @@ app = FastAPI(
     description="A simple face recognition system using FastAPI and Facenet",
     version="1.0.0",
     lifespan=lifespan,
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
 )
 app.mount("/media", StaticFiles(directory=settings.MEDIA_DIR), name="media")
 
@@ -41,11 +44,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router, prefix="/auth", tags=["auth"])
-app.include_router(face_router, prefix="/face", tags=["face"])
+app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+app.include_router(face_router, prefix="/api/face", tags=["face"])
 
 
-@app.get("/")
+@app.get("/api/health")
 def health_check():
     return {"message": "Server is running"}
 
