@@ -6,5 +6,5 @@ pwdlib[argon2]
 pgvector
 deepface
 tf-keras
-opencv-python
+opencv-python<5
 

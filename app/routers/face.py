@@ -168,6 +168,7 @@ async def create_face(
 
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
+    detected_faces = []
     try:
         detected_faces = DeepFace.represent(
             img_path=image_rgb,
@@ -175,8 +176,9 @@ async def create_face(
             enforce_detection=True,
             detector_backend="opencv",
         )
-    except Exception:
-        raise HTTPException(status_code=400, detail="Face not detected in the image")
+    except Exception as e:
+        print(f"Error during face detection: {e}")
+        raise HTTPException(status_code=400, detail="Error during face detection.")
 
     if len(detected_faces) > 1:
         raise HTTPException(
@@ -241,7 +243,7 @@ async def delete_face(
     return face
 
 
-@router.post("/face/recognize/image", response_model=RecognitionMediaResponse)
+@router.post("/recognize/image", response_model=RecognitionMediaResponse)
 async def recognize_faces_in_image(
     request: Request,
     face_form: FaceForm = Depends(),
@@ -328,7 +330,7 @@ async def recognize_faces_in_image(
     return RecognitionMediaResponse(results=recognition_results, media_url=media_url)
 
 
-@router.post("/face/recognize/video", response_model=RecognitionMediaResponse)
+@router.post("/recognize/video", response_model=RecognitionMediaResponse)
 async def recognize_faces_in_video(
     request: Request,
     user=Depends(get_authenticated_user),
